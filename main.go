@@ -12,30 +12,107 @@ import (
 // Config represents the check plugin config.
 type Config struct {
 	sensu.PluginConfig
-	Example string
+	State              string
+	Udp                bool
+	Tcp                bool
+	Warning            int
+	Critical           int
 }
 
 var (
 	plugin = Config{
 		PluginConfig: sensu.PluginConfig{
-			Name:     "sensu-net-checks",
-			Short:    "Collections of various Network checks for Sensu in Go",
-			Keyspace: "sensu.io/plugins/sensu-net-checks/config",
+			Name:     "http-check",
+			Short:    "HTTP Status/String Check",
+			Keyspace: "sensu.io/plugins/net-checks/config",
 		},
 	}
 
 	options = []*sensu.PluginConfigOption{
 		{
-			Path:      "example",
-			Env:       "CHECK_EXAMPLE",
-			Argument:  "example",
-			Shorthand: "e",
+			Path:      "state",
+			Env:       "STATE",
+			Argument:  "state",
+			Shorthand: "s",
+			Default:   "established",
+			Usage:     "Connection state",
+			Value:     &plugin.State,
+		},
+		{
+			Path:      "search-string",
+			Env:       "CHECK_SEARCH_STRING",
+			Argument:  "search-string",
+			Shorthand: "s",
 			Default:   "",
-			Usage:     "An example string configuration option",
-			Value:     &plugin.Example,
+			Usage:     "String to search for, if not provided do status check only",
+			Value:     &plugin.SearchString,
+		},
+		{
+			Path:      "insecure-skip-verify",
+			Env:       "",
+			Argument:  "insecure-skip-verify",
+			Shorthand: "i",
+			Default:   false,
+			Usage:     "Skip TLS certificate verification (not recommended!)",
+			Value:     &plugin.InsecureSkipVerify,
+		},
+		{
+			Path:      "trusted-ca-file",
+			Env:       "",
+			Argument:  "trusted-ca-file",
+			Shorthand: "t",
+			Default:   "",
+			Usage:     "TLS CA certificate bundle in PEM format",
+			Value:     &plugin.TrustedCAFile,
+		},
+		{
+			Path:      "redirect-ok",
+			Env:       "",
+			Argument:  "redirect-ok",
+			Shorthand: "r",
+			Default:   false,
+			Usage:     "Allow redirects",
+			Value:     &plugin.RedirectOK,
+		},
+		{
+			Path:      "timeout",
+			Env:       "",
+			Argument:  "timeout",
+			Shorthand: "T",
+			Default:   15,
+			Usage:     "Request timeout in seconds",
+			Value:     &plugin.Timeout,
+		},
+		{
+			Path:      "header",
+			Env:       "",
+			Argument:  "header",
+			Shorthand: "H",
+			Default:   []string{},
+			Usage:     "Additional header(s) to send in check request",
+			Value:     &plugin.Headers,
+		},
+		{
+			Path:      "mtls-key-file",
+			Env:       "",
+			Argument:  "mtls-key-file",
+			Shorthand: "K",
+			Default:   "",
+			Usage:     "Key file for mutual TLS auth in PEM format",
+			Value:     &plugin.MTLSKeyFile,
+		},
+		{
+			Path:      "mtls-cert-file",
+			Env:       "",
+			Argument:  "mtls-cert-file",
+			Shorthand: "C",
+			Default:   "",
+			Usage:     "Certificate file for mutual TLS auth in PEM format",
+			Value:     &plugin.MTLSCertFile,
 		},
 	}
 )
+
 
 func main() {
 	useStdin := false
