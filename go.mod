@@ -1,4 +1,4 @@
-module github.com/{{ .GithubUser }}/{{ .GithubProject }}
+module github.com/elfranne/sensu-net-checks
 
 go 1.14
 

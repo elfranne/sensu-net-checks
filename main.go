@@ -18,9 +18,9 @@ type Config struct {
 var (
 	plugin = Config{
 		PluginConfig: sensu.PluginConfig{
-			Name:     "{{ .GithubProject }}",
-			Short:    "{{ .Description }}",
-			Keyspace: "sensu.io/plugins/{{ .GithubProject }}/config",
+			Name:     "sensu-net-checks",
+			Short:    "Collections of various Network checks for Sensu in Go",
+			Keyspace: "sensu.io/plugins/sensu-net-checks/config",
 		},
 	}
 
