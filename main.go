@@ -5,8 +5,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/sensu-community/sensu-plugin-sdk/sensu"
 	"github.com/sensu/sensu-go/types"
+	"github.com/sensu/sensu-plugin-sdk/sensu"
 )
 
 // Config represents the check plugin config.
@@ -25,7 +25,7 @@ var (
 	}
 
 	options = []*sensu.PluginConfigOption{
-		&sensu.PluginConfigOption{
+		{
 			Path:      "example",
 			Env:       "CHECK_EXAMPLE",
 			Argument:  "example",
